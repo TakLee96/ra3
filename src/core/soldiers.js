@@ -1,0 +1,2 @@
+
+import { Soldier } from './units';
