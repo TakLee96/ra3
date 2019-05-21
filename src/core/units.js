@@ -1,12 +1,12 @@
 /* Basic Units */
 
 class Unit {
-  constructor(team=-1, health=0) {
+  constructor(team = -1, health = 0) {
     this._team = team;
     this.health = health;
     this.endTurn();
   }
-  endTurn(team=-1) { /* pass */ }
+  endTurn(team = -1) { /* pass */ }
 
   get team() { return this._team; }
   get isGrid() { return false; }
@@ -39,9 +39,9 @@ export class Building extends Unit {
 }
 
 class MobileAssaultUnit extends Unit {
-  endTurn(team=-1) {
+  endTurn(team = -1) {
     super.endTurn(team);
-    if (team == -1 || this.team == team) {
+    if (team === -1 || this.team === team) {
       this.stepsThisTurn = this.stepsPerTurn;
       this.fired = false;
     }
@@ -55,7 +55,7 @@ export class Soldier extends MobileAssaultUnit {
 }
 
 export class Vehicle extends MobileAssaultUnit {
-  get defenseType() { return 'VEHICLE' }
+  get defenseType() { return 'VEHICLE'; }
 }
 
 export class Panzer extends MobileAssaultUnit {

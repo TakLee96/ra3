@@ -1,4 +1,5 @@
 /* Soldiers */
+/* eslint-disable no-magic-numbers */
 
 import { Soldier } from './units';
 

@@ -14,12 +14,15 @@ const DAMAGE_RATIO = {
   'FLAME'      : { 'CONCRETE': 1, 'INFANTRY': 1, 'VEHICLE': 1, 'ARMOR': 1 }
 };
 
+const WORLD_SIZE_X = 11;
+const WORLD_SIZE_Y = 11;
+
 class GameState {
   constructor() {
     this.board = [];
-    for (let i = 0; i < 11; i++) {
+    for (let i = 0; i < WORLD_SIZE_X; i++) {
       let row = [];
-      for (let j = 0; j < 11; j++) {
+      for (let j = 0; j < WORLD_SIZE_Y; j++) {
         row.push(new Grid());
       }
       this.board.push(row);
@@ -36,18 +39,21 @@ class GameState {
     this.board[10][8] = new Buggy(1);
   }
 
-  getUnit({i, j}) {
+  getUnit({ i, j }) {
     return this.board[i][j];
   }
 
-  cleanUp({i, j}) {
+  cleanUp({ i, j }) {
     this.board[i][j] = new Grid();
   }
 
   move(from, to) {
     let dist = Math.abs(from.i - to.i) + Math.abs(from.j - to.j);
     let mover = this.getUnit(from);
-    if (mover.team == this.currentPlayer && mover.canMove && dist <= mover.stepsThisTurn && this.getUnit(to).isGrid) {
+    if (
+      mover.team === this.currentPlayer && mover.canMove &&
+      dist <= mover.stepsThisTurn && this.getUnit(to).isGrid
+    ) {
       mover.stepsThisTurn -= dist;
       this.board[to.i][to.j] = mover;
       this.board[from.i][from.j] = new Grid();
@@ -58,7 +64,10 @@ class GameState {
     let attacker = this.getUnit(from);
     let defender = this.getUnit(to);
     let dist = Math.abs(from.i - to.i) + Math.abs(from.j - to.j);
-    if (attacker.team == this.currentPlayer && attacker.canFire && attacker.team != defender.team && dist <= attacker.fireRange) {
+    if (
+      attacker.team === this.currentPlayer && attacker.canFire &&
+      attacker.team !== defender.team && dist <= attacker.fireRange
+    ) {
       let ratio = DAMAGE_RATIO[attacker.attackType][defender.defenseType];
       defender.health -= attacker.attack * ratio / defender.defense;
       attacker.fired = true;

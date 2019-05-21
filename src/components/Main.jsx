@@ -4,7 +4,7 @@ import 'styles/App.css';
 import React from 'react';
 import GameState from '../core/state';
 
-const COLORS = [ 'green', 'blue', 'purple' ];
+const COLORS = ['green', 'blue', 'purple'];
 COLORS['-1'] = 'black';
 
 class AppComponent extends React.Component {
@@ -54,7 +54,7 @@ class AppComponent extends React.Component {
   }
 
   isSelected(i, j) {
-    return (this.state.selected.i == i && this.state.selected.j == j) ? 'selected' : '';
+    return (this.state.selected.i === i && this.state.selected.j === j) ? 'selected' : '';
   }
 
   isReachable(i, j) {
@@ -64,6 +64,7 @@ class AppComponent extends React.Component {
     if (this.state.inMove) dd = this.getSelectedUnit().stepsThisTurn;
     if (this.state.inFire) dd = this.getSelectedUnit().fireRange;
     if (di + dj <= dd) return 'reachable';
+
     return '';
   }
 
@@ -78,7 +79,8 @@ class AppComponent extends React.Component {
                 key={`${i}-${j}`}
                 className={`${this.isSelected(i, j)} ${this.isReachable(i, j)}`}
                 onClick={this.select.bind(this, i, j)}
-                style={{color: COLORS[this.state.game.getUnit({ i, j }).team]}}>
+                style={{ color: COLORS[this.state.game.getUnit({ i, j }).team] }}
+              >
                 {col.representation}
               </td>
             ))}</tr>
@@ -90,18 +92,20 @@ class AppComponent extends React.Component {
       <div id="control">
         <input className="button" type="button" value="move" onClick={this.move.bind(this)}
           disabled={
-            this.state.game.currentPlayer != this.getSelectedUnit().team ||
+            this.state.game.currentPlayer !== this.getSelectedUnit().team ||
             this.state.inFire ||
             !this.getSelectedUnit().canMove ||
-            this.getSelectedUnit().stepsThisTurn == 0
-          } />
+            this.getSelectedUnit().stepsThisTurn === 0
+          }
+        />
         <input className="button" type="button" value="attack" onClick={this.fire.bind(this)}
           disabled={
-            this.state.game.currentPlayer != this.getSelectedUnit().team ||
+            this.state.game.currentPlayer !== this.getSelectedUnit().team ||
             this.state.inMove ||
             !this.getSelectedUnit().canFire ||
             this.getSelectedUnit().fired
-          } />
+          }
+        />
         <input className="button" type="button" value="end turn" onClick={this.endTurn.bind(this)} />
       </div>
 

@@ -1,4 +1,5 @@
 /* Panzers */
+/* eslint-disable no-magic-numbers */
 
 import { Panzer } from './units';
 

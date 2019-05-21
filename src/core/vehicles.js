@@ -1,4 +1,5 @@
 /* Vehicles */
+/* eslint-disable no-magic-numbers */
 
 import { Vehicle } from './units';
 
