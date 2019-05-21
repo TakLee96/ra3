@@ -1,22 +1,15 @@
 /* Basic Units */
 
 class Unit {
-  constructor() {
-    this.stepThisTurn = 0;
-    this.fired = false;
-    this.spawn = null;
-    this.progress = 0;
-    this.rallyPoint = null;
+  constructor(team=-1, health=0) {
+    this._team = team;
+    this.health = health;
+    this.endTurn();
   }
+  endTurn(team=-1) { /* pass */ }
 
-  endTurn() {
-    this.stepThisTurn = 0;
-    this.fired = false;
-    if (this.spawn != null) {
-      this.progress += 1;
-    }
-  }
-
+  get team() { return this._team; }
+  get isGrid() { return false; }
   get representation() { return ''; }
 
   get canMove() { return false; }
@@ -31,12 +24,12 @@ class Unit {
   
   get turnsToSpawn() { throw new Error(); }
   get cost() { throw new Error(); }
-  get health() { throw new Error(); }
   get defense() { throw new Error(); }
   get defenseType() { throw new Error(); }
 }
 
-export class Grid {
+export class Grid extends Unit {
+  get isGrid() { return true; }
   get representation() { return ''; }
 }
 
@@ -45,28 +38,26 @@ export class Building extends Unit {
   get defenseType() { return 'CONCRETE'; }
 }
 
-export class Soldier extends Unit {
+class MobileAssaultUnit extends Unit {
+  endTurn(team=-1) {
+    super.endTurn(team);
+    if (team == -1 || this.team == team) {
+      this.stepsThisTurn = this.stepsPerTurn;
+      this.fired = false;
+    }
+  }
   get canMove() { return true; }
   get canFire() { return true; }
+}
+
+export class Soldier extends MobileAssaultUnit {
   get defenseType() { return 'INFANTRY'; }
 }
 
-export class Vehicle extends Unit {
-  get canMove() { return true; }
-  get canFire() { return true; }
+export class Vehicle extends MobileAssaultUnit {
   get defenseType() { return 'VEHICLE' }
 }
 
-export class Panzer extends Unit {
-  get canMove() { return true; }
-  get canFire() { return true; }
+export class Panzer extends MobileAssaultUnit {
   get defenseType() { return 'ARMOR'; }
 }
-
-export let DAMAGE_RATIO = {
-  'SMALL_ARMS' : { 'CONCRETE': 1, 'INFANTRY': 1, 'VEHICLE': 1, 'ARMOR': 1 },
-  'MACHINE_GUN': { 'CONCRETE': 1, 'INFANTRY': 1, 'VEHICLE': 1, 'ARMOR': 1 },
-  'ARTILLERY'  : { 'CONCRETE': 1, 'INFANTRY': 1, 'VEHICLE': 1, 'ARMOR': 1 },
-  'ANTI_TANK'  : { 'CONCRETE': 1, 'INFANTRY': 1, 'VEHICLE': 1, 'ARMOR': 1 },
-  'FLAME'      : { 'CONCRETE': 1, 'INFANTRY': 1, 'VEHICLE': 1, 'ARMOR': 1 }
-};

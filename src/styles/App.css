@@ -18,3 +18,31 @@ body {
   top: 10px;
   left: 10px;
 }
+
+#control {
+  margin-top: 10px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#info {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid black;
+}
+
+.button {
+  margin-right: 10px;
+}
+
+.selected {
+  border: 1px solid red;
+}
+
+.reachable {
+  background-color: orange;
+}
+
+.team {
+  color: white;
+}
